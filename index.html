@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poetry AI Platinum</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- ПЕРЕМЕННЫЕ ЦВЕТОВ --- */
+        :root {
+            --bg-color: #f8f9fa;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --text-color: #1a1a1a;
+            --accent-color: #6c5ce7;
+            --secondary-accent: #a29bfe;
+            --border-color: #e0e0e0;
+            --input-bg: #ffffff;
+            --shadow: 0 10px 30px rgba(0,0,0,0.05);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0f0c29;
+            --card-bg: rgba(20, 20, 35, 0.8);
+            --text-color: #efefef;
+            --accent-color: #00d2ff;
+            --secondary-accent: #3a7bd5;
+            --border-color: #2d3436;
+            --input-bg: #1e1e2e;
+            --shadow: 0 10px 40px rgba(0,0,0,0.4);
+        }
+
+        /* --- ГЛОБАЛЬНЫЕ СТИЛИ --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(108, 92, 231, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 210, 255, 0.05) 0%, transparent 20%);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            transition: var(--transition);
+        }
+
+        /* --- АНИМИРОВАННЫЙ ФОН --- */
+        .bg-circles {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--accent-color);
+            filter: blur(80px);
+            opacity: 0.1;
+            animation: move 20s infinite alternate;
+        }
+
+        @keyframes move {
+            from { transform: translate(0, 0); }
+            to { transform: translate(100px, 100px); }
+        }
+
+        /* --- ОСНОВНОЙ КОНТЕЙНЕР --- */
+        .main-container {
+            width: 90%;
+            max-width: 800px;
+            padding: 40px 20px;
+            z-index: 10;
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            padding: 50px;
+            box-shadow: var(--shadow);
+            transform: translateY(0);
+            transition: var(--transition);
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ --- */
+        .theme-toggle {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--input-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            font-size: 20px;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(360deg) scale(1.1);
+            background: var(--accent-color);
+            color: white;
+        }
+
+        /* --- ТИПОГРАФИКА --- */
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            text-align: center;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, var(--accent-color), var(--secondary-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        /* --- ФОРМА ВВОДА --- */
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            background: var(--input-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            padding: 20px;
+            color: var(--text-color);
+            font-family: inherit;
+            font-size: 1.1rem;
+            resize: none;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 20px rgba(108, 92, 231, 0.2);
+        }
+
+        /* --- КНОПКА --- */
+        .btn-send {
+            width: 100%;
+            padding: 18px;
+            border-radius: 20px;
+            border: none;
+            background: linear-gradient(45deg, var(--accent-color), var(--secondary-accent));
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .btn-send:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(108, 92, 231, 0.4);
+        }
+
+        .btn-send:active { transform: translateY(0); }
+
+        .btn-send::after {
+            content: "";
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: rgba(255,255,255,0.2);
+            transform: rotate(45deg);
+            transition: 0.5s;
+            left: -150%;
+        }
+
+        .btn-send:hover::after { left: 150%; }
+
+        /* --- РЕЗУЛЬТАТ --- */
+        #result-box {
+            margin-top: 40px;
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(var(--accent-color), 0.05);
+            border-left: 4px solid var(--accent-color);
+            display: none;
+            animation: slideUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #result-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            font-style: italic;
+            white-space: pre-wrap;
+        }
+
+        /* --- ИНДИКАТОР ЗАГРУЗКИ --- */
+        .loader {
+            display: none;
+            margin: 20px auto;
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* --- АДАПТИВНОСТЬ ПОД МОБИЛКИ --- */
+        @media (max-width: 600px) {
+            .glass-card {
+                padding: 30px 20px;
+                border-radius: 20px;
+            }
+            .theme-toggle {
+                top: 15px;
+                right: 15px;
+                width: 40px;
+                height: 40px;
+            }
+            h1 { font-size: 2.2rem; }
+            textarea { height: 120px; }
+            .main-container { width: 95%; }
+        }
+
+        /* --- ФУТЕР --- */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.7rem;
+            opacity: 0.5;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-circles">
+        <div class="circle" style="width: 300px; height: 300px; top: -100px; left: -100px;"></div>
+        <div class="circle" style="width: 400px; height: 400px; bottom: -150px; right: -150px; animation-delay: -5s;"></div>
+    </div>
+
+    <div class="theme-toggle" id="themeBtn" title="Сменить тему">🌙</div>
+
+    <main class="main-container">
+        <div class="glass-card">
+            <h1>L'Artiste AI</h1>
+            <p class="subtitle">Ваше вдохновение в рифмах</p>
+
+            <div class="input-wrapper">
+                <textarea id="promptInput" placeholder="Введите вашу тему для стихотворения..."></textarea>
+            </div>
+
+            <button class="btn-send" onclick="generatePoetry()">
+                <span id="btnText">Создать шедевр</span>
+                <div class="loader" id="loader"></div>
+            </button>
+
+            <div id="result-box">
+                <div id="result-text"></div>
+            </div>
+        </div>
+
+        <div class="footer">
+            POWERED BY GEMINI 1.5 FLASH | 2026 EDITION
+        </div>
+    </main>
+
+    <script>
+        // --- КОНФИГУРАЦИЯ ---
+        const API_KEY = "AIzaSyB9iLbLq0aLlCHyIvYvzLpF8I6-UqZldk4";
+        const ENDPOINT = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+        
+        const SYSTEM_PROMPT = `
+            Ты — элитный литературный бот. Твои правила строго ограничены:
+            1. Если пользователь хочет СТИХ, ЛИТЕРАТУРНЫЙ АНАЛИЗ или обсуждение КНИГ:
+               - Напиши красивое, глубокое стихотворение или дай ответ по литературе.
+               - Используй богатый язык и метафоры.
+            2. Если запрос НЕ КАСАЕТСЯ литературы (код, быт, математика, новости, любая другая тема):
+               - Отвечай ТОЛЬКО фразой: "Этот сайт предназначен для литературы".
+            3. Если запрос смешанный, старайся перевести его в литературное русло или откажи.
+        `;
+
+        // --- ЛОГИКА ТЕМЫ ---
+        const themeBtn = document.getElementById('themeBtn');
+        let currentTheme = localStorage.getItem('theme') || 'light';
+
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            themeBtn.innerText = theme === 'light' ? '🌙' : '☀️';
+            localStorage.setItem('theme', theme);
+        }
+
+        setTheme(currentTheme);
+
+        themeBtn.addEventListener('click', () => {
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+            setTheme(currentTheme);
+        });
+
+        // --- ОСНОВНАЯ ФУНКЦИЯ ---
+        async function generatePoetry() {
+            const input = document.getElementById('promptInput').value.trim();
+            const resultBox = document.getElementById('result-box');
+            const resultText = document.getElementById('result-text');
+            const btnText = document.getElementById('btnText');
+            const loader = document.getElementById('loader');
+
+            if (!input) {
+                alert("Пожалуйста, впишите тему!");
+                return;
+            }
+
+            // Визуальное состояние загрузки
+            btnText.style.display = 'none';
+            loader.style.display = 'block';
+            resultBox.style.display = 'none';
+
+            const payload = {
+                contents: [{
+                    parts: [{
+                        text: `${SYSTEM_PROMPT}\n\nЗапрос пользователя: ${input}`
+                    }]
+                }],
+                generationConfig: {
+                    temperature: 0.7,
+                    maxOutputTokens: 800
+                }
+            };
+
+            try {
+                const response = await fetch(ENDPOINT, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    throw new Error(data.error.message);
+                }
+
+                const aiResponse = data.candidates[0].content.parts[0].text;
+                
+                // Эффект печатающегося текста
+                resultText.innerText = "";
+                resultBox.style.display = 'block';
+                
+                let i = 0;
+                const typeWriter = () => {
+                    if (i < aiResponse.length) {
+                        resultText.innerText += aiResponse.charAt(i);
+                        i++;
+                        setTimeout(typeWriter, 15);
+                    }
+                };
+                typeWriter();
+
+            } catch (error) {
+                resultBox.style.display = 'block';
+                resultText.innerText = "Упс! Произошла ошибка. Проверьте VPN или ключ API.\n\n" + error.message;
+                resultText.style.color = "#ff7675";
+            } finally {
+                btnText.style.display = 'block';
+                loader.style.display = 'none';
+            }
+        }
+
+        // Обработка Ctrl + Enter для отправки
+        document.getElementById('promptInput').addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                generatePoetry();
+            }
+        });
+    </script>
+</body>
+</html>
