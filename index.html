@@ -3,73 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poetry AI Platinum | Cloudflare Powered</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    
+    <title>L'Artiste AI — Нейропоэзия</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #f8f9fa;
-            --card-bg: rgba(255, 255, 255, 0.9);
-            --text-color: #1a1a1a;
-            --accent-color: #6c5ce7;
-            --secondary-accent: #a29bfe;
-            --border-color: #e0e0e0;
-            --input-bg: #ffffff;
-            --shadow: 0 10px 30px rgba(0,0,0,0.05);
-            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --bg: #0f172a;
+            --card: rgba(30, 41, 59, 0.7);
+            --accent: #38bdf8;
+            --text: #f1f5f9;
         }
 
-        [data-theme="dark"] {
-            --bg-color: #0f0c29;
-            --card-bg: rgba(20, 20, 35, 0.8);
-            --text-color: #efefef;
-            --accent-color: #00d2ff;
-            --secondary-accent: #3a7bd5;
-            --border-color: #2d3436;
-            --input-bg: #1e1e2e;
-            --shadow: 0 10px 40px rgba(0,0,0,0.4);
+        [data-theme="light"] {
+            --bg: #f8fafc;
+            --card: rgba(255, 255, 255, 0.8);
+            --accent: #0284c7;
+            --text: #1e293b;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            color: var(--text);
             font-family: 'Montserrat', sans-serif;
-            background: var(--bg-color);
-            color: var(--text-color);
+            transition: all 0.5s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: var(--transition);
-            padding: 20px;
-        }
-
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            cursor: pointer;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: var(--card-bg);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow);
-            z-index: 1000;
         }
 
         .glass-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--border-color);
-            border-radius: 25px;
+            background: var(--card);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
             padding: 40px;
-            width: 100%;
-            max-width: 700px;
-            box-shadow: var(--shadow);
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             text-align: center;
         }
 
@@ -77,85 +49,83 @@
             font-family: 'Playfair Display', serif;
             font-size: 2.5rem;
             margin-bottom: 10px;
-            background: linear-gradient(45deg, var(--accent-color), var(--secondary-accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--accent);
         }
 
         textarea {
             width: 100%;
-            height: 120px;
-            background: var(--input-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 15px;
+            height: 100px;
+            background: rgba(0,0,0,0.2);
+            border: 2px solid var(--accent);
+            border-radius: 12px;
             padding: 15px;
-            color: var(--text-color);
+            color: var(--text);
             font-size: 1rem;
-            margin-bottom: 20px;
-            outline: none;
-            transition: var(--transition);
+            margin-top: 20px;
+            box-sizing: border-box;
+            resize: none;
         }
-
-        textarea:focus { border-color: var(--accent-color); }
 
         .btn-send {
-            width: 100%;
-            padding: 15px;
-            border-radius: 15px;
-            border: none;
-            background: var(--accent-color);
+            background: var(--accent);
             color: white;
-            font-size: 1.1rem;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
             font-weight: bold;
             cursor: pointer;
-            transition: var(--transition);
+            margin-top: 20px;
+            width: 100%;
+            transition: transform 0.2s;
+            position: relative;
         }
 
-        .btn-send:hover { opacity: 0.9; transform: translateY(-2px); }
+        .btn-send:active { transform: scale(0.98); }
 
         #result-box {
             margin-top: 30px;
             padding: 20px;
-            border-radius: 15px;
-            background: rgba(108, 92, 231, 0.1);
-            display: none;
-            text-align: left;
-            border-left: 5px solid var(--accent-color);
-        }
-
-        #result-text {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.1rem;
-            line-height: 1.6;
+            background: rgba(0,0,0,0.1);
+            border-radius: 12px;
+            border-left: 4px solid var(--accent);
+            min-height: 50px;
             white-space: pre-wrap;
+            font-style: italic;
+            line-height: 1.6;
         }
 
         .loader {
             display: none;
-            width: 25px;
-            height: 25px;
-            border: 3px solid #ffffff;
-            border-top: 3px solid transparent;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #fff;
+            border-bottom-color: transparent;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: rotation 1s linear infinite;
             margin: 0 auto;
         }
 
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
 
-        @media (max-width: 480px) {
-            h1 { font-size: 1.8rem; }
-            .glass-card { padding: 25px; }
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            font-size: 1.5rem;
         }
     </style>
 </head>
 <body>
 
-    <div class="theme-toggle" id="themeBtn">🌙</div>
+    <div class="theme-toggle" onclick="toggleTheme()">☀️</div>
 
     <div class="glass-card">
         <h1>L'Artiste AI</h1>
-        <p style="margin-bottom: 25px; opacity: 0.7;">Поэзия через призму технологий</p>
+        <p style="opacity: 0.7;">Поэзия через призму технологий</p>
 
         <textarea id="promptInput" placeholder="Введите тему или первую строку стихотворения..."></textarea>
 
@@ -165,71 +135,74 @@
         </button>
 
         <div id="result-box">
-            <div id="result-text"></div>
+            <div id="result-text">Ваше стихотворение появится здесь...</div>
         </div>
     </div>
 
     <script>
         // --- КОНФИГУРАЦИЯ ---
-        // Твой личный Воркер Cloudflare в роли прокси
+        // Ключ API_KEY удален отсюда ради безопасности и перенесен в Cloudflare
         const PROXY_URL = "https://throbbing-sunset-6162.aleksandrbaharev37348.workers.dev";
-        const ENDPOINT = PROXY_URL;
+        const ENDPOINT = PROXY_URL; 
 
-        // --- ТЕМА ---
-        const themeBtn = document.getElementById('themeBtn');
-        let currentTheme = localStorage.getItem('theme') || 'light';
-        
-        function setTheme(theme) {
-            document.documentElement.setAttribute('data-theme', theme);
-            themeBtn.innerText = theme === 'light' ? '🌙' : '☀️';
-            localStorage.setItem('theme', theme);
-        }
-        setTheme(currentTheme);
-        themeBtn.onclick = () => {
-            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
-            setTheme(currentTheme);
-        };
-
-        // --- ГЕНЕРАЦИЯ ---
         async function generatePoetry() {
-            const input = document.getElementById('promptInput').value.trim();
-            const resultBox = document.getElementById('result-box');
+            const promptInput = document.getElementById('promptInput');
             const resultText = document.getElementById('result-text');
-            const btnText = document.getElementById('btnText');
             const loader = document.getElementById('loader');
+            const btnText = document.getElementById('btnText');
 
-            if (!input) return alert("Напишите что-нибудь!");
+            if (!promptInput.value) {
+                alert("Пожалуйста, введите тему!");
+                return;
+            }
 
-            btnText.style.display = 'none';
+            // Анимация загрузки
             loader.style.display = 'block';
-            resultBox.style.display = 'none';
+            btnText.style.display = 'none';
+            resultText.innerText = 'Нейросеть настраивает лиру...';
 
             try {
                 const response = await fetch(ENDPOINT, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        contents: [{ parts: [{ text: "Ты профессиональный поэт. Напиши красивое стихотворение на тему: " + input }] }]
+                        contents: [{
+                            parts: [{
+                                text: `Напиши короткое и изящное стихотворение на тему: ${promptInput.value}. 
+                                Используй метафоры и слог, характерный для поэтов Серебряного века. 
+                                Выдай только текст стихотворения без лишних комментариев.`
+                            }]
+                        }]
                     })
                 });
 
                 const data = await response.json();
-                
-                if (data.error) throw new Error(data.error.message);
 
-                const aiResponse = data.candidates[0].content.parts[0].text;
-                
-                resultBox.style.display = 'block';
-                resultText.innerText = aiResponse;
+                // Обработка ответа от Gemini
+                if (data.candidates && data.candidates[0].content.parts[0].text) {
+                    resultText.innerText = data.candidates[0].content.parts[0].text;
+                } else if (data.error) {
+                    resultText.innerText = "Ошибка нейросети: " + data.error.message;
+                } else {
+                    resultText.innerText = "Что-то пошло не так. Попробуйте другую тему.";
+                }
 
             } catch (error) {
-                resultBox.style.display = 'block';
-                resultText.innerText = "Ошибка: " + error.message;
-                resultText.style.color = "red";
+                console.error(error);
+                resultText.innerText = "Ошибка соединения: Воркер не ответил. Проверь настройки в Cloudflare.";
             } finally {
-                btnText.style.display = 'block';
                 loader.style.display = 'none';
+                btnText.style.display = 'inline';
             }
+        }
+
+        // Переключение темы
+        function toggleTheme() {
+            const body = document.body;
+            const current = body.getAttribute('data-theme');
+            const newTheme = current === 'light' ? 'dark' : 'light';
+            body.setAttribute('data-theme', newTheme);
+            document.querySelector('.theme-toggle').innerText = newTheme === 'light' ? '🌙' : '☀️';
         }
     </script>
 </body>
