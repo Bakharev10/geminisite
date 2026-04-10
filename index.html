@@ -1,236 +1,187 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poetry AI Platinum | Cloudflare Powered</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --bg-color: #f8f9fa;
-            --card-bg: rgba(255, 255, 255, 0.9);
-            --text-color: #1a1a1a;
-            --accent-color: #6c5ce7;
-            --secondary-accent: #a29bfe;
-            --border-color: #e0e0e0;
-            --input-bg: #ffffff;
-            --shadow: 0 10px 30px rgba(0,0,0,0.05);
-            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L'Artiste AI — Нейропоэзия</title>
 
-        [data-theme="dark"] {
-            --bg-color: #0f0c29;
-            --card-bg: rgba(20, 20, 35, 0.8);
-            --text-color: #efefef;
-            --accent-color: #00d2ff;
-            --secondary-accent: #3a7bd5;
-            --border-color: #2d3436;
-            --input-bg: #1e1e2e;
-            --shadow: 0 10px 40px rgba(0,0,0,0.4);
-        }
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+<style>
+:root {
+    --bg: #0f172a;
+    --card: rgba(30, 41, 59, 0.7);
+    --accent: #38bdf8;
+    --text: #f1f5f9;
+}
 
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background: var(--bg-color);
-            color: var(--text-color);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: var(--transition);
-            padding: 20px;
-        }
+[data-theme="light"] {
+    --bg: #f8fafc;
+    --card: rgba(255, 255, 255, 0.8);
+    --accent: #0284c7;
+    --text: #1e293b;
+}
 
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            cursor: pointer;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: var(--card-bg);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow);
-            z-index: 1000;
-        }
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
 
-        .glass-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--border-color);
-            border-radius: 25px;
-            padding: 40px;
-            width: 100%;
-            max-width: 700px;
-            box-shadow: var(--shadow);
-            text-align: center;
-        }
+.glass-card {
+    background: var(--card);
+    backdrop-filter: blur(12px);
+    border-radius: 24px;
+    padding: 40px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+}
 
-        h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            background: linear-gradient(45deg, var(--accent-color), var(--secondary-accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+h1 {
+    font-family: 'Playfair Display', serif;
+    color: var(--accent);
+}
 
-        textarea {
-            width: 100%;
-            height: 120px;
-            background: var(--input-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 15px;
-            padding: 15px;
-            color: var(--text-color);
-            font-size: 1rem;
-            margin-bottom: 20px;
-            outline: none;
-            transition: var(--transition);
-        }
+textarea {
+    width: 100%;
+    height: 100px;
+    margin-top: 20px;
+    border-radius: 12px;
+    padding: 15px;
+    border: 2px solid var(--accent);
+    background: rgba(0,0,0,0.2);
+    color: var(--text);
+    resize: none;
+}
 
-        textarea:focus { border-color: var(--accent-color); }
+button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 12px;
+    border: none;
+    background: var(--accent);
+    color: white;
+    cursor: pointer;
+}
 
-        .btn-send {
-            width: 100%;
-            padding: 15px;
-            border-radius: 15px;
-            border: none;
-            background: var(--accent-color);
-            color: white;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: var(--transition);
-        }
+#result-box {
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(0,0,0,0.1);
+    border-radius: 12px;
+    white-space: pre-wrap;
+    font-style: italic;
+}
 
-        .btn-send:hover { opacity: 0.9; transform: translateY(-2px); }
+.loader {
+    display: none;
+    border: 3px solid #fff;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    margin: 10px auto;
+    animation: spin 1s linear infinite;
+}
 
-        #result-box {
-            margin-top: 30px;
-            padding: 20px;
-            border-radius: 15px;
-            background: rgba(108, 92, 231, 0.1);
-            display: none;
-            text-align: left;
-            border-left: 5px solid var(--accent-color);
-        }
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
 
-        #result-text {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            white-space: pre-wrap;
-        }
-
-        .loader {
-            display: none;
-            width: 25px;
-            height: 25px;
-            border: 3px solid #ffffff;
-            border-top: 3px solid transparent;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        @media (max-width: 480px) {
-            h1 { font-size: 1.8rem; }
-            .glass-card { padding: 25px; }
-        }
-    </style>
+.theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+</style>
 </head>
+
 <body>
 
-    <div class="theme-toggle" id="themeBtn">🌙</div>
+<div class="theme-toggle" onclick="toggleTheme()">☀️</div>
 
-    <div class="glass-card">
-        <h1>L'Artiste AI</h1>
-        <p style="margin-bottom: 25px; opacity: 0.7;">Поэзия через призму технологий</p>
+<div class="glass-card">
+    <h1>L'Artiste AI</h1>
+    <p>Поэзия через технологии</p>
 
-        <textarea id="promptInput" placeholder="Введите тему или первую строку стихотворения..."></textarea>
+    <textarea id="promptInput" placeholder="Введите тему..."></textarea>
 
-        <button class="btn-send" onclick="generatePoetry()">
-            <span id="btnText">Создать шедевр</span>
-            <div class="loader" id="loader"></div>
-        </button>
+    <button onclick="generatePoetry()">
+        <span id="btnText">Создать стих</span>
+    </button>
 
-        <div id="result-box">
-            <div id="result-text"></div>
-        </div>
+    <div class="loader" id="loader"></div>
+
+    <div id="result-box">
+        <div id="result-text">Здесь появится стих...</div>
     </div>
+</div>
 
-    <script>
-        // --- КОНФИГУРАЦИЯ ---
-        // Твой личный Воркер Cloudflare в роли прокси
-        const PROXY_URL = "https://throbbing-sunset-6162.aleksandrbaharev37348.workers.dev";
-        const ENDPOINT = PROXY_URL;
+<script>
+const ENDPOINT = "https://throbbing-sunset-6162.aleksandrbaharev37348.workers.dev";
 
-        // --- ТЕМА ---
-        const themeBtn = document.getElementById('themeBtn');
-        let currentTheme = localStorage.getItem('theme') || 'light';
-        
-        function setTheme(theme) {
-            document.documentElement.setAttribute('data-theme', theme);
-            themeBtn.innerText = theme === 'light' ? '🌙' : '☀️';
-            localStorage.setItem('theme', theme);
+async function generatePoetry() {
+    const input = document.getElementById('promptInput');
+    const result = document.getElementById('result-text');
+    const loader = document.getElementById('loader');
+    const btnText = document.getElementById('btnText');
+
+    if (!input.value) {
+        alert("Введите тему");
+        return;
+    }
+
+    loader.style.display = 'block';
+    btnText.style.display = 'none';
+    result.innerText = "Генерация...";
+
+    try {
+        const res = await fetch(ENDPOINT, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                contents: [{
+                    parts: [{
+                        text: `Напиши красивое короткое стихотворение на тему: ${input.value}. Без пояснений.`
+                    }]
+                }]
+            })
+        });
+
+        const data = await res.json();
+        console.log(data);
+
+        if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
+            result.innerText = data.candidates[0].content.parts[0].text;
+        } else if (data.error) {
+            result.innerText = "Ошибка: " + data.error.message;
+        } else {
+            result.innerText = "Пустой ответ от нейросети";
         }
-        setTheme(currentTheme);
-        themeBtn.onclick = () => {
-            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
-            setTheme(currentTheme);
-        };
 
-        // --- ГЕНЕРАЦИЯ ---
-        async function generatePoetry() {
-            const input = document.getElementById('promptInput').value.trim();
-            const resultBox = document.getElementById('result-box');
-            const resultText = document.getElementById('result-text');
-            const btnText = document.getElementById('btnText');
-            const loader = document.getElementById('loader');
+    } catch (e) {
+        result.innerText = "Ошибка соединения";
+    } finally {
+        loader.style.display = 'none';
+        btnText.style.display = 'inline';
+    }
+}
 
-            if (!input) return alert("Напишите что-нибудь!");
+function toggleTheme() {
+    const body = document.body;
+    const current = body.getAttribute('data-theme');
+    const newTheme = current === 'light' ? 'dark' : 'light';
+    body.setAttribute('data-theme', newTheme);
+}
+</script>
 
-            btnText.style.display = 'none';
-            loader.style.display = 'block';
-            resultBox.style.display = 'none';
-
-            try {
-                const response = await fetch(ENDPOINT, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: "Ты профессиональный поэт. Напиши красивое стихотворение на тему: " + input }] }]
-                    })
-                });
-
-                const data = await response.json();
-                
-                if (data.error) throw new Error(data.error.message);
-
-                const aiResponse = data.candidates[0].content.parts[0].text;
-                
-                resultBox.style.display = 'block';
-                resultText.innerText = aiResponse;
-
-            } catch (error) {
-                resultBox.style.display = 'block';
-                resultText.innerText = "Ошибка: " + error.message;
-                resultText.style.color = "red";
-            } finally {
-                btnText.style.display = 'block';
-                loader.style.display = 'none';
-            }
-        }
-    </script>
 </body>
 </html>
